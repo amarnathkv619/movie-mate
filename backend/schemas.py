@@ -12,6 +12,7 @@ class MediaBase(BaseModel):
     rating: Optional[float] = None
     review: Optional[str] = None
     total_episodes: Optional[int] = None
+    current_episode: Optional[int] = 0
 
 
 class MediaCreate(MediaBase):
