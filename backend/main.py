@@ -1,7 +1,11 @@
 from fastapi import FastAPI
+from database import engine
+import models
+
+models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
 
 @app.get("/")
 def read_root():
-    return {"message": "Hello! The MovieMate Backend is active."}
+    return {"message": "Database created! MovieMate Backend is running."}
