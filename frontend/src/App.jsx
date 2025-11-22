@@ -1,9 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar";
-import Home from "./pages/Home"; // <--- Import the real page
-
-// Placeholder for Add
-const AddMovie = () => <div className="text-white text-center mt-10">Add Form Coming Soon</div>;
+import Home from "./pages/Home";
+import AddMovie from "./pages/AddMovie"; 
 
 function App() {
   return (
