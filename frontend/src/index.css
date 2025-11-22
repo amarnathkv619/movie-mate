@@ -1,1 +1,13 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
+
 @import "tailwindcss";
+
+/* Apply the font globally */
+body {
+  font-family: 'Outfit', sans-serif;
+  background-color: #020617; /* Deep Slate 950 */
+  background-image: 
+    radial-gradient(at 0% 0%, rgba(29, 78, 216, 0.15) 0px, transparent 50%),
+    radial-gradient(at 100% 0%, rgba(124, 58, 237, 0.15) 0px, transparent 50%);
+  min-height: 100vh;
+}
