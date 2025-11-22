@@ -2,10 +2,12 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import MovieCard from "../components/MovieCard";
 import { BiLoaderAlt } from "react-icons/bi";
+import { useNavigate } from "react-router-dom";
 
 function Home() {
   const [movies, setMovies] = useState([]);
   const [loading, setLoading] = useState(true);
+  const navigate=useNavigate();
 
   // 1. Fetch Data from FastAPI
   const fetchMovies = async () => {
@@ -31,7 +33,10 @@ function Home() {
       }
     }
   };
-
+  const handleEdit = (movie) => {
+    // Navigate to edit page AND pass the movie data
+    navigate(`/edit/${movie.id}`, { state: { movie } });
+  };
   // Load data when page opens
   useEffect(() => {
     fetchMovies();
@@ -57,7 +62,7 @@ function Home() {
                 key={movie.id} 
                 movie={movie} 
                 onDelete={handleDelete}
-                onEdit={() => alert("Edit coming soon!")} 
+                onEdit={handleEdit}
             />
           ))}
         </div>
