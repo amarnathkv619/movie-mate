@@ -2,12 +2,14 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import MovieCard from "../components/MovieCard";
-import { BiLoaderAlt, BiFilterAlt, BiCollection } from "react-icons/bi";
+import { BiLoaderAlt, BiFilterAlt, BiSearch, BiX } from "react-icons/bi";
 
 function Home() {
   const [movies, setMovies] = useState([]);
   const [loading, setLoading] = useState(true);
   
+  // Filter States
+  const [searchTitle, setSearchTitle] = useState("");
   const [filterStatus, setFilterStatus] = useState("All");
   const [filterPlatform, setFilterPlatform] = useState("All");
   const [filterGenre, setFilterGenre] = useState("All");
@@ -44,86 +46,106 @@ function Home() {
     fetchMovies();
   }, []);
 
-  const uniquePlatforms = ["All", ...new Set(movies.map(m => m.platform).filter(Boolean))];
-  const uniqueGenres = ["All", ...new Set(movies.map(m => m.genre).filter(Boolean))];
+  // --- UPDATED LOGIC START ---
 
+  // 1. Get Unique Platforms (Same as before)
+  const uniquePlatforms = ["All", ...new Set(movies.map(m => m.platform).filter(Boolean))];
+
+  // 2. Get Unique Individual Genres (SPLIT Logic)
+
+  const allGenres = movies
+    .map(m => m.genre ? m.genre.split(", ") : [])
+    .flat();
+  const uniqueGenres = ["All", ...new Set(allGenres)].sort();
+
+  // 3. Filter Logic (INCLUDES Logic)
   const filteredMovies = movies.filter(movie => {
+    const searchMatch = movie.title.toLowerCase().includes(searchTitle.toLowerCase());
     const statusMatch = filterStatus === "All" || movie.status === filterStatus;
     const platformMatch = filterPlatform === "All" || movie.platform === filterPlatform;
-    const genreMatch = filterGenre === "All" || movie.genre === filterGenre;
-    return statusMatch && platformMatch && genreMatch;
+    
+    // Check if the movie's genre string contains the selected genre
+    const genreMatch = filterGenre === "All" || (movie.genre && movie.genre.includes(filterGenre));
+    
+    return searchMatch && statusMatch && platformMatch && genreMatch;
   });
 
+ 
+
+  const clearFilters = () => {
+    setSearchTitle("");
+    setFilterStatus("All");
+    setFilterPlatform("All");
+    setFilterGenre("All");
+  };
+
   return (
-    // Reduced vertical padding (py-6 instead of py-10)
-    <div className="max-w-7xl mx-auto py-6 px-4">
+    <div className="max-w-7xl mx-auto py-8 px-4">
       
-      {/* --- COMPACT HEADER --- */}
-      <div className="flex items-center justify-between mb-6">
-        <div>
-          {/* Smaller Title (text-2xl instead of 4xl) */}
-          <h1 className="text-2xl font-bold text-white tracking-tight">My Collection</h1>
-          <p className="text-slate-400 text-xs mt-1">Track your cinematic journey.</p>
-        </div>
+      
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8 border-b border-slate-800 pb-6">
         
-        {/* Smaller Badge */}
-        <div className="flex items-center gap-2 bg-slate-800/80 backdrop-blur-sm px-3 py-1.5 rounded-full border border-slate-700">
-            <BiCollection className="text-blue-500 text-sm" />
-            <span className="text-white font-bold text-sm">{filteredMovies.length}</span>
-            <span className="text-slate-400 text-xs">Items</span>
-        </div>
-      </div>
-
-      {/* --- SLEEK FILTER BAR --- */}
-      {/* Reduced padding (p-2) and rounded-xl */}
-      <div className="sticky top-20 z-40 bg-slate-900/90 backdrop-blur-md p-2 rounded-xl border border-white/5 shadow-lg mb-6">
-        <div className="flex flex-col md:flex-row gap-3 items-center justify-between">
-            
-            <div className="flex items-center gap-2 text-blue-400 font-bold uppercase tracking-wider text-[10px] pl-2">
-                <BiFilterAlt size={14} /> Filters
+        {/* LEFT: Search Bar */}
+        <div className="relative w-full md:w-96 group">
+            <div className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-blue-500 transition-colors">
+                <BiSearch size={20} />
             </div>
-
-            <div className="grid grid-cols-3 gap-2 w-full md:w-auto">
-                {/* Inputs are now smaller (py-1.5 text-xs) */}
-                <select 
-                    className="w-full md:w-32 bg-slate-800 text-white border border-slate-700 hover:border-slate-500 rounded-lg px-3 py-1.5 text-xs font-medium outline-none focus:ring-1 focus:ring-blue-500/50 cursor-pointer"
-                    value={filterStatus}
-                    onChange={(e) => setFilterStatus(e.target.value)}
-                >
-                    <option value="All">Status</option>
-                    <option value="Wishlist">Wishlist</option>
-                    <option value="Watching">Watching</option>
-                    <option value="Completed">Completed</option>
-                </select>
-
-                <select 
-                    className="w-full md:w-32 bg-slate-800 text-white border border-slate-700 hover:border-slate-500 rounded-lg px-3 py-1.5 text-xs font-medium outline-none focus:ring-1 focus:ring-blue-500/50 cursor-pointer"
-                    value={filterPlatform}
-                    onChange={(e) => setFilterPlatform(e.target.value)}
-                >
-                    <option value="All">Platform</option>
-                    {uniquePlatforms.map(p => p !== "All" && <option key={p} value={p}>{p}</option>)}
-                </select>
-
-                <select 
-                    className="w-full md:w-32 bg-slate-800 text-white border border-slate-700 hover:border-slate-500 rounded-lg px-3 py-1.5 text-xs font-medium outline-none focus:ring-1 focus:ring-blue-500/50 cursor-pointer"
-                    value={filterGenre}
-                    onChange={(e) => setFilterGenre(e.target.value)}
-                >
-                    <option value="All">Genre</option>
-                    {uniqueGenres.map(g => g !== "All" && <option key={g} value={g}>{g}</option>)}
-                </select>
-            </div>
-
-            {/* Reset Button */}
-            {(filterStatus !== "All" || filterPlatform !== "All" || filterGenre !== "All") && (
+            <input 
+                type="text" 
+                placeholder="Search your collection..." 
+                value={searchTitle}
+                onChange={(e) => setSearchTitle(e.target.value)}
+                className="w-full bg-slate-900/50 text-white border border-slate-700 rounded-xl pl-10 pr-4 py-2.5 outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500/50 transition-all placeholder:text-slate-600"
+            />
+            {searchTitle && (
                 <button 
-                    onClick={() => {setFilterStatus("All"); setFilterPlatform("All"); setFilterGenre("All")}}
-                    className="text-red-400 hover:text-red-300 text-xs font-medium hover:underline px-2"
+                    onClick={() => setSearchTitle("")}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-white transition"
                 >
-                    Reset
+                    <BiX size={20} />
                 </button>
             )}
+        </div>
+
+        {/* RIGHT: Filters */}
+        <div className="flex flex-wrap items-center gap-2">
+            <div className="hidden md:flex items-center gap-2 text-slate-500 text-[10px] uppercase font-bold tracking-wider mr-2">
+                <BiFilterAlt /> Filter:
+            </div>
+
+            <select 
+                className="bg-slate-900 text-slate-300 border border-slate-700 rounded-lg px-3 py-2 text-xs font-medium outline-none focus:border-blue-500 cursor-pointer hover:bg-slate-800 transition"
+                value={filterStatus}
+                onChange={(e) => setFilterStatus(e.target.value)}
+            >
+                <option value="All">Status</option>
+                <option value="Wishlist">Wishlist</option>
+                <option value="Watching">Watching</option>
+                <option value="Completed">Completed</option>
+            </select>
+
+            <select 
+                className="bg-slate-900 text-slate-300 border border-slate-700 rounded-lg px-3 py-2 text-xs font-medium outline-none focus:border-blue-500 cursor-pointer hover:bg-slate-800 transition"
+                value={filterPlatform}
+                onChange={(e) => setFilterPlatform(e.target.value)}
+            >
+                <option value="All">Platform</option>
+                {uniquePlatforms.map(p => p !== "All" && <option key={p} value={p}>{p}</option>)}
+            </select>
+
+            <select 
+                className="bg-slate-900 text-slate-300 border border-slate-700 rounded-lg px-3 py-2 text-xs font-medium outline-none focus:border-blue-500 cursor-pointer hover:bg-slate-800 transition"
+                value={filterGenre}
+                onChange={(e) => setFilterGenre(e.target.value)}
+            >
+                <option value="All">Genre</option>
+                {uniqueGenres.map(g => g !== "All" && <option key={g} value={g}>{g}</option>)}
+            </select>
+
+            {/* Item Count Badge */}
+            <div className="ml-2 bg-slate-800 px-3 py-1.5 rounded-lg border border-slate-700 text-xs font-bold text-slate-400">
+                {filteredMovies.length}
+            </div>
         </div>
       </div>
 
@@ -134,7 +156,7 @@ function Home() {
             <p className="text-slate-400 text-sm">Loading...</p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {filteredMovies.length > 0 ? (
             filteredMovies.map((movie) => (
               <MovieCard 
@@ -145,13 +167,13 @@ function Home() {
               />
             ))
           ) : (
-            <div className="col-span-full py-20 text-center">
-                <p className="text-slate-500">No movies found.</p>
+            <div className="col-span-full py-20 text-center opacity-50">
+                <p className="text-slate-400 mb-3 text-lg">No movies found.</p>
                 <button 
-                    onClick={() => {setFilterStatus("All"); setFilterPlatform("All"); setFilterGenre("All")}}
-                    className="text-blue-500 text-sm mt-2 hover:underline"
+                    onClick={clearFilters}
+                    className="text-blue-400 text-sm hover:underline font-bold"
                 >
-                    Clear Filters
+                    Clear Search & Filters
                 </button>
             </div>
           )}

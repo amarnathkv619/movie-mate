@@ -12,7 +12,6 @@ function MovieCard({ movie, onDelete, onEdit }) {
     }
   };
 
-  // Prevent flip when clicking buttons
   const handleAction = (e, action) => {
     e.stopPropagation();
     action();
@@ -20,16 +19,16 @@ function MovieCard({ movie, onDelete, onEdit }) {
 
   return (
     <div 
-      className="group h-96 perspective-[1000px] cursor-pointer"
+      className="group h-96 perspective-[1000px] cursor-pointer" 
       onClick={() => setIsFlipped(!isFlipped)}
     >
       <div className={`relative h-full w-full transition-all duration-700 transform-3d ${isFlipped ? "rotate-y-180" : ""}`}>
         
-        {/* ================= FRONT SIDE ================= */}
+        {/* FRONT SIDE */}
         <div className="absolute inset-0 backface-hidden bg-slate-900 rounded-2xl overflow-hidden border border-slate-800 shadow-xl group-hover:shadow-blue-500/20 group-hover:border-blue-500/30 transition-all flex flex-col">
             
-            {/* --- Poster with Zoom Effect --- */}
-            <div className="relative h-52 overflow-hidden shrink-0">
+            {/* --- Poster  --- */}
+            <div className="relative h-40 overflow-hidden shrink-0"> {/* Changed from h-52 to h-40 */}
                 {movie.poster_url ? (
                     <img 
                       src={movie.poster_url} 
@@ -42,42 +41,40 @@ function MovieCard({ movie, onDelete, onEdit }) {
                     </div>
                 )}
                 
-                {/* Gradient Overlay */}
                 <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/20 to-transparent" />
                 
-                {/* Floating Status Badge */}
-                <div className="absolute top-3 left-3">
-                    <span className={`text-[10px] uppercase tracking-widest font-bold px-3 py-1 rounded-full backdrop-blur-md border border-white/10 ${getStatusColor(movie.status)}`}>
+                <div className="absolute top-2 left-2">
+                    <span className={`text-[10px] uppercase tracking-widest font-bold px-2.5 py-0.5 rounded-full backdrop-blur-md border border-white/10 ${getStatusColor(movie.status)}`}>
                         {movie.status}
                     </span>
                 </div>
 
-                {/* Floating Rating */}
-                <div className="absolute top-3 right-3 flex items-center gap-1.5 bg-black/40 backdrop-blur-xl border border-white/10 px-2.5 py-1 rounded-lg text-yellow-400 font-bold text-sm shadow-lg">
+                <div className="absolute top-2 right-2 flex items-center gap-1 bg-black/40 backdrop-blur-xl border border-white/10 px-2 py-0.5 rounded-lg text-yellow-400 font-bold text-xs shadow-lg">
                     <BiStar className="text-yellow-400" /> <span>{movie.rating}</span>
                 </div>
             </div>
 
             {/* --- Info Section --- */}
-            <div className="p-5 flex flex-col grow relative">
-                {/* Title & Director */}
-                <div className="mb-3">
+            <div className="p-4 flex flex-col grow relative">
+                <div className="mb-2">
                     <h3 className="text-lg font-bold text-white leading-tight group-hover:text-blue-400 transition-colors line-clamp-1">
                       {movie.title}
                     </h3>
-                    <p className="text-slate-500 text-xs font-medium mt-1">
+                    <p className="text-slate-500 text-xs font-medium">
                       {movie.director ? `Dir. ${movie.director}` : "Director Unknown"}
                     </p>
                 </div>
 
-                {/* Meta Tags (Genre & Platform) */}
-                <div className="flex flex-wrap gap-2 mb-auto">
-                    <div className="flex items-center gap-1.5 text-[10px] font-bold uppercase text-slate-300 bg-slate-800/80 px-2 py-1 rounded border border-slate-700">
+                {/* Meta Tags */}
+                <div className="flex flex-wrap gap-1.5 mb-auto">
+                    <div className="flex items-center gap-1 text-[9px] font-bold uppercase text-slate-300 bg-slate-800/80 px-2 py-1 rounded border border-slate-700">
                         {movie.media_type === "Movie" ? <BiCameraMovie className="text-blue-400" /> : <BiTv className="text-purple-400" />}
+                        <span>{movie.media_type}</span>
+                        <span className="text-slate-600">•</span>
                         <span>{movie.genre?.split(",")[0] || "N/A"}</span>
                     </div>
                     {movie.platform && (
-                      <div className="text-[10px] font-bold uppercase text-slate-400 bg-slate-800/50 px-2 py-1 rounded border border-slate-700">
+                      <div className="text-[9px] font-bold uppercase text-slate-400 bg-slate-800/50 px-2 py-1 rounded border border-slate-700">
                           {movie.platform}
                       </div>
                     )}
@@ -100,7 +97,7 @@ function MovieCard({ movie, onDelete, onEdit }) {
                 )}
                 
                 {/* Footer Actions */}
-                <div className="flex justify-between items-center mt-4 pt-3 border-t border-slate-800/50">
+                <div className="flex justify-between items-center mt-auto pt-3 border-t border-slate-800/50">
                     <span className="text-[10px] text-blue-500 font-bold animate-pulse flex items-center gap-1">
                        <BiTime /> Click for Review
                     </span>
@@ -111,26 +108,25 @@ function MovieCard({ movie, onDelete, onEdit }) {
                           className="p-1.5 text-slate-400 hover:text-white hover:bg-blue-600 rounded-lg transition"
                           title="Edit"
                         >
-                          <BiEdit size={18} />
+                          <BiEdit size={16} />
                         </button>
                         <button 
                           onClick={(e) => handleAction(e, () => onDelete(movie.id))} 
                           className="p-1.5 text-slate-400 hover:text-white hover:bg-red-500 rounded-lg transition"
                           title="Delete"
                         >
-                          <BiTrash size={18} />
+                          <BiTrash size={16} />
                         </button>
                     </div>
                 </div>
             </div>
         </div>
 
-        {/* ================= BACK SIDE (REVIEW) ================= */}
-        <div className="absolute inset-0 h-full w-full rounded-2xl bg-slate-900 p-6 text-slate-200 rotate-y-180 backface-hidden border border-slate-700 shadow-2xl flex flex-col">
-            
-            <div className="flex items-center justify-between mb-4 border-b border-slate-800 pb-3">
+        {/*  BACK SIDE (REVIEW)  */}
+        <div className="absolute inset-0 h-full w-full rounded-2xl bg-slate-900 p-5 text-slate-200 rotate-y-180 backface-hidden border border-slate-700 shadow-2xl flex flex-col">
+            <div className="flex items-center justify-between mb-3 border-b border-slate-800 pb-2">
                 <div className="flex items-center gap-2 text-blue-400 font-bold uppercase text-xs tracking-widest">
-                    <BiNote size={16} /> Review
+                    <BiNote size={14} /> Review
                 </div>
                 <div className="text-yellow-400 text-xs font-bold">
                   {movie.rating}/5 Stars
@@ -139,19 +135,18 @@ function MovieCard({ movie, onDelete, onEdit }) {
 
             <div className="overflow-y-auto grow pr-2 custom-scrollbar">
                 {movie.review ? (
-                    <p className="text-sm leading-7 text-slate-300 font-light">"{movie.review}"</p>
+                    <p className="text-sm leading-6 text-slate-300 font-light">"{movie.review}"</p>
                 ) : (
                     <div className="h-full flex flex-col items-center justify-center text-slate-600">
-                        <BiEdit size={32} className="mb-2 opacity-50" />
+                        <BiEdit size={28} className="mb-2 opacity-50" />
                         <p className="text-xs font-medium">No review added yet.</p>
-                        <p className="text-[10px] mt-1">Tap edit to add your thoughts.</p>
                     </div>
                 )}
             </div>
 
             <button 
                onClick={(e) => handleAction(e, () => onEdit(movie))}
-               className="mt-4 w-full py-2 bg-slate-800 hover:bg-blue-600 hover:shadow-[0_0_15px_rgba(37,99,235,0.5)] text-white text-xs font-bold uppercase tracking-wider rounded-lg transition-all"
+               className="mt-3 w-full py-2 bg-slate-800 hover:bg-blue-600 hover:shadow-[0_0_15px_rgba(37,99,235,0.5)] text-white text-xs font-bold uppercase tracking-wider rounded-lg transition-all"
             >
                Edit Details
             </button>
