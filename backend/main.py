@@ -32,7 +32,7 @@ def get_db():
 
 @app.get("/")
 def read_root():
-    return {"message": "MovieMate API is Live!"}
+    return {"message": "MovieMate is Live!"}
 
 # 1. Add a Movie
 @app.post("/media/", response_model=schemas.MediaResponse)

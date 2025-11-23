@@ -5,6 +5,7 @@ from typing import Optional
 class MediaBase(BaseModel):
     title: str
     media_type: str  # "Movie" or "Series"
+    poster_url: Optional[str] = None
     director: Optional[str] = None
     genre: Optional[str] = None
     platform: Optional[str] = None

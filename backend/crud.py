@@ -14,6 +14,7 @@ def create_media(db: Session, media: schemas.MediaCreate):
     db_media = models.Media(
         title=media.title,
         media_type=media.media_type,
+        poster_url=media.poster_url,
         director=media.director,
         genre=media.genre,
         platform=media.platform,

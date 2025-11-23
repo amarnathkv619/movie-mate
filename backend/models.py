@@ -7,7 +7,7 @@ class Media(Base):
     id = Column(Integer, primary_key=True, index=True)
     title = Column(String, index=True)
     media_type = Column(String)  # "Movie" or "Series"
-    
+    poster_url = Column(String, nullable=True)
     # Basic Info
     director = Column(String, nullable=True)
     genre = Column(String, nullable=True)
