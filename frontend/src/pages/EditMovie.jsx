@@ -9,7 +9,6 @@ function EditMovie() {
   const { id } = useParams();
   const [loading, setLoading] = useState(false);
 
-  // Initialize form with existing data
   const [formData, setFormData] = useState(state?.movie || {
     title: "",
     media_type: "Movie",
@@ -24,7 +23,6 @@ function EditMovie() {
     current_episode: 0
   });
 
-  // Redirect if no state found 
   useEffect(() => {
     if (!state?.movie) {
       alert("Please select a movie from the list to edit.");
@@ -62,92 +60,83 @@ function EditMovie() {
   if (!state?.movie) return null;
 
   return (
-    <div className="max-w-2xl mx-auto mt-10 bg-slate-800 p-8 rounded-xl shadow-2xl border border-slate-700">
-      <div className="flex items-center gap-4 mb-6">
-        <button onClick={() => navigate("/")} className="text-gray-400 hover:text-white transition">
-          <BiArrowBack size={24} />
-        </button>
-        <h2 className="text-2xl font-bold text-white">Edit Media</h2>
+    
+    <div className="max-w-md mx-auto mt-20 mb-10 bg-slate-900/80 backdrop-blur-md p-6 rounded-2xl shadow-2xl border border-slate-800">
+      
+      {/* Header */}
+      <div className="flex items-center justify-between mb-5">
+        <div className="flex items-center gap-3">
+            <button onClick={() => navigate("/")} className="text-slate-400 hover:text-white transition"><BiArrowBack size={20} /></button>
+            <h2 className="text-lg font-bold text-white">Edit Media</h2>
+        </div>
+        {/* Tiny Poster Preview */}
+        {formData.poster_url && <img src={formData.poster_url} alt="Poster" className="h-10 w-10 object-cover rounded-md border border-slate-600" />}
       </div>
 
-      <form onSubmit={handleSubmit} className="space-y-6">
+      <form onSubmit={handleSubmit} className="space-y-3">
         
-        {/* Title & Type */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="md:col-span-2">
-            <label className="block text-gray-400 text-sm mb-2">Title</label>
-            <input name="title" required value={formData.title} onChange={handleChange} className="w-full bg-slate-900 text-white border border-slate-600 rounded-lg p-3 outline-none focus:border-blue-500" />
+        {/* Row 1: Title & Type */}
+        <div className="grid grid-cols-3 gap-3">
+          <div className="col-span-2">
+            <label className="block text-slate-500 text-[10px] uppercase font-bold mb-0.5">Title</label>
+            <input name="title" required value={formData.title} onChange={handleChange} className="w-full bg-slate-800 text-white border border-slate-700 rounded-lg px-2 py-1.5 text-xs outline-none focus:border-blue-500" />
           </div>
           <div>
-            <label className="block text-gray-400 text-sm mb-2">Type</label>
-            <select name="media_type" value={formData.media_type} onChange={handleChange} className="w-full bg-slate-900 text-white border border-slate-600 rounded-lg p-3 outline-none focus:border-blue-500">
+            <label className="block text-slate-500 text-[10px] uppercase font-bold mb-0.5">Type</label>
+            <select name="media_type" value={formData.media_type} onChange={handleChange} className="w-full bg-slate-800 text-white border border-slate-700 rounded-lg px-2 py-1.5 text-xs outline-none focus:border-blue-500">
               <option value="Movie">Movie</option>
-              <option value="Series">TV Series</option>
+              <option value="Series">Series</option>
             </select>
           </div>
         </div>
 
-        {/* Director, Genre, Platform */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div>
-            <label className="block text-gray-400 text-sm mb-2">Director</label>
-            <input name="director" value={formData.director || ""} onChange={handleChange} className="w-full bg-slate-900 text-white border border-slate-600 rounded-lg p-3 outline-none focus:border-blue-500" />
-          </div>
-          <div>
-            <label className="block text-gray-400 text-sm mb-2">Genre</label>
-            <input name="genre" value={formData.genre || ""} onChange={handleChange} className="w-full bg-slate-900 text-white border border-slate-600 rounded-lg p-3 outline-none focus:border-blue-500" />
-          </div>
-          <div>
-            <label className="block text-gray-400 text-sm mb-2">Platform</label>
-            <input name="platform" value={formData.platform || ""} onChange={handleChange} className="w-full bg-slate-900 text-white border border-slate-600 rounded-lg p-3 outline-none focus:border-blue-500" />
-          </div>
+        {/* Row 2: Director & Platform */}
+        <div className="grid grid-cols-2 gap-3">
+          <div><label className="block text-slate-500 text-[10px] uppercase font-bold mb-0.5">Director</label><input name="director" value={formData.director || ""} onChange={handleChange} className="w-full bg-slate-800 text-white border border-slate-700 rounded-lg px-2 py-1.5 text-xs outline-none focus:border-blue-500" /></div>
+          <div><label className="block text-slate-500 text-[10px] uppercase font-bold mb-0.5">Platform</label><input name="platform" value={formData.platform || ""} onChange={handleChange} className="w-full bg-slate-800 text-white border border-slate-700 rounded-lg px-2 py-1.5 text-xs outline-none focus:border-blue-500" /></div>
         </div>
 
-        {/* Status & Rating */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {/* Row 3: Genre */}
+        <div><label className="block text-slate-500 text-[10px] uppercase font-bold mb-0.5">Genre</label><input name="genre" value={formData.genre || ""} onChange={handleChange} className="w-full bg-slate-800 text-white border border-slate-700 rounded-lg px-2 py-1.5 text-xs outline-none focus:border-blue-500" /></div>
+
+        {/* Row 4: Status & Rating */}
+        <div className="grid grid-cols-2 gap-3">
           <div>
-            <label className="block text-gray-400 text-sm mb-2">Status</label>
-            <select name="status" value={formData.status} onChange={handleChange} className="w-full bg-slate-900 text-white border border-slate-600 rounded-lg p-3 outline-none focus:border-blue-500">
+            <label className="block text-slate-500 text-[10px] uppercase font-bold mb-0.5">Status</label>
+            <select name="status" value={formData.status} onChange={handleChange} className="w-full bg-slate-800 text-white border border-slate-700 rounded-lg px-2 py-1.5 text-xs outline-none focus:border-blue-500">
               <option value="Wishlist">Wishlist</option>
               <option value="Watching">Watching</option>
               <option value="Completed">Completed</option>
             </select>
           </div>
           <div>
-            <label className="block text-gray-400 text-sm mb-2">Rating (0-5)</label>
-            <input type="number" step="0.1" max="5" min="0" name="rating" value={formData.rating} onChange={handleChange} className="w-full bg-slate-900 text-white border border-slate-600 rounded-lg p-3 outline-none focus:border-blue-500" />
+            <label className="block text-slate-400 text-[10px] uppercase font-bold mb-0.5">Rating</label>
+            <input type="number" step="0.1" max="5" name="rating" value={formData.rating} onChange={handleChange} className="w-full bg-slate-800 text-white border border-slate-700 rounded-lg px-2 py-1.5 text-xs outline-none focus:border-blue-500" />
           </div>
         </div>
 
-        {/* TV Series Progress */}
+        {/* Series Only */}
         {formData.media_type === "Series" && (
-          <div className="grid grid-cols-2 gap-6 bg-slate-900/50 p-4 rounded-lg border border-slate-700">
-            <div>
-               <label className="block text-gray-400 text-sm mb-2">Watched Episodes</label>
-               <input type="number" name="current_episode" value={formData.current_episode} onChange={handleChange} className="w-full bg-slate-800 text-white border border-slate-600 rounded-lg p-2" />
-            </div>
-            <div>
-               <label className="block text-gray-400 text-sm mb-2">Total Episodes</label>
-               <input type="number" name="total_episodes" value={formData.total_episodes} onChange={handleChange} className="w-full bg-slate-800 text-white border border-slate-600 rounded-lg p-2" />
-            </div>
+          <div className="grid grid-cols-2 gap-3 bg-slate-800/50 p-2 rounded-lg border border-slate-700/50">
+            <div><label className="block text-slate-500 text-[10px] uppercase font-bold mb-0.5">Watched</label><input type="number" name="current_episode" value={formData.current_episode} onChange={handleChange} className="w-full bg-slate-800 text-white border border-slate-700 rounded-lg px-2 py-1 text-xs" /></div>
+            <div><label className="block text-slate-500 text-[10px] uppercase font-bold mb-0.5">Total</label><input type="number" name="total_episodes" value={formData.total_episodes} onChange={handleChange} className="w-full bg-slate-800 text-white border border-slate-700 rounded-lg px-2 py-1 text-xs" /></div>
           </div>
         )}
 
-        {/* Review / Notes Section */}
+        {/* Notes */}
         <div>
-          <label className="block text-gray-400 text-sm mb-2">Review / Notes</label>
+          <label className="block text-slate-500 text-[10px] uppercase font-bold mb-0.5">Notes</label>
           <textarea 
             name="review" 
-            rows="4"
+            rows="3" 
             value={formData.review || ""}
             onChange={handleChange}
-            className="w-full bg-slate-900 text-white border border-slate-600 rounded-lg p-3 outline-none focus:border-blue-500 text-sm"
-            placeholder="Write your thoughts here..."
+            className="w-full bg-slate-800 text-white border border-slate-700 rounded-lg px-3 py-2 text-xs outline-none focus:border-blue-500 resize-none"
+            placeholder="Write your thoughts..."
           ></textarea>
         </div>
 
-        {/* Submit Button */}
-        <button type="submit" disabled={loading} className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-lg shadow-lg transition flex items-center justify-center gap-2">
+        <button type="submit" disabled={loading} className="w-full bg-green-600 hover:bg-green-500 text-white font-bold py-2.5 rounded-lg shadow-lg shadow-green-500/20 transition flex items-center justify-center gap-2 text-sm mt-2">
           {loading ? "Updating..." : <><BiSave /> Update Media</>}
         </button>
       </form>

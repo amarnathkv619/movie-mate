@@ -9,17 +9,16 @@ function Navbar() {
           
           {/* --- LOGO SECTION --- */}
           <Link to="/" className="group flex items-center gap-3 transition-opacity hover:opacity-90">
-            {/* Icon Box */}
             <div className="relative flex items-center justify-center w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-600 to-purple-600 shadow-lg shadow-blue-500/20 group-hover:scale-105 transition-transform duration-300">
               <BiMoviePlay className="text-white text-xl" />
             </div>
-            {/* Gradient Text */}
+         
             <span className="text-2xl font-bold bg-gradient-to-r from-white to-slate-400 bg-clip-text text-transparent tracking-tight">
               MovieMate
             </span>
           </Link>
 
-          {/* --- RIGHT ACTIONS --- */}
+       
           <div className="flex items-center gap-6">
             {/* Collection Link (Hidden on very small screens) */}
             <Link 
@@ -30,7 +29,6 @@ function Navbar() {
               <span>My Collection</span>
             </Link>
             
-            {/* Add Movie Button (Glowing Gradient) */}
             <Link 
               to="/add" 
               className="flex items-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white px-5 py-2.5 rounded-xl font-bold text-sm shadow-lg shadow-blue-500/20 hover:shadow-blue-500/40 hover:-translate-y-0.5 transition-all duration-300"

@@ -28,7 +28,7 @@ function MovieCard({ movie, onDelete, onEdit }) {
         <div className="absolute inset-0 backface-hidden bg-slate-900 rounded-2xl overflow-hidden border border-slate-800 shadow-xl group-hover:shadow-blue-500/20 group-hover:border-blue-500/30 transition-all flex flex-col">
             
             {/* --- Poster  --- */}
-            <div className="relative h-40 overflow-hidden shrink-0"> {/* Changed from h-52 to h-40 */}
+            <div className="relative h-40 overflow-hidden shrink-0"> 
                 {movie.poster_url ? (
                     <img 
                       src={movie.poster_url} 
