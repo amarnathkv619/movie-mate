@@ -11,7 +11,7 @@ models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
 
-# Allow Frontend (React) to talk to Backend
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"], 
