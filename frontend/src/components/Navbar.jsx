@@ -1,29 +1,45 @@
 import { Link } from "react-router-dom";
-import { BiMoviePlay, BiPlusCircle } from "react-icons/bi"; 
+import { BiMoviePlay, BiPlusCircle, BiCollection } from "react-icons/bi"; 
 
 function Navbar() {
   return (
-    <nav className="bg-slate-900 text-white shadow-lg sticky top-0 z-50 border-b border-slate-800">
-      <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-        {/* Logo */}
-        <Link to="/" className="flex items-center gap-2 text-2xl font-bold text-blue-500 hover:text-blue-400 transition">
-          <BiMoviePlay />
-          <span>MovieMate</span>
-        </Link>
-
-        {/* Navigation Links */}
-        <div className="flex gap-6 items-center">
-          <Link to="/" className="hover:text-blue-400 transition font-medium text-slate-300 hover:text-white">
-            My Collection
-          </Link>
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-slate-950/70 backdrop-blur-xl border-b border-white/5 supports-[backdrop-filter]:bg-slate-950/60">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-20">
           
-          <Link 
-            to="/add" 
-            className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-full transition font-semibold shadow-md hover:shadow-blue-500/20"
-          >
-            <BiPlusCircle className="text-xl" />
-            <span>Add Movie</span>
+          {/* --- LOGO SECTION --- */}
+          <Link to="/" className="group flex items-center gap-3 transition-opacity hover:opacity-90">
+            {/* Icon Box */}
+            <div className="relative flex items-center justify-center w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-600 to-purple-600 shadow-lg shadow-blue-500/20 group-hover:scale-105 transition-transform duration-300">
+              <BiMoviePlay className="text-white text-xl" />
+            </div>
+            {/* Gradient Text */}
+            <span className="text-2xl font-bold bg-gradient-to-r from-white to-slate-400 bg-clip-text text-transparent tracking-tight">
+              MovieMate
+            </span>
           </Link>
+
+          {/* --- RIGHT ACTIONS --- */}
+          <div className="flex items-center gap-6">
+            {/* Collection Link (Hidden on very small screens) */}
+            <Link 
+              to="/" 
+              className="hidden md:flex items-center gap-2 text-sm font-semibold text-slate-400 hover:text-white transition-colors"
+            >
+              <BiCollection className="text-lg" />
+              <span>My Collection</span>
+            </Link>
+            
+            {/* Add Movie Button (Glowing Gradient) */}
+            <Link 
+              to="/add" 
+              className="flex items-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white px-5 py-2.5 rounded-xl font-bold text-sm shadow-lg shadow-blue-500/20 hover:shadow-blue-500/40 hover:-translate-y-0.5 transition-all duration-300"
+            >
+              <BiPlusCircle className="text-lg" />
+              <span>Add Movie</span>
+            </Link>
+          </div>
+
         </div>
       </div>
     </nav>

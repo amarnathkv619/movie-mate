@@ -5,7 +5,7 @@ import MovieCard from "../components/MovieCard";
 import { BiLoaderAlt, BiFilterAlt, BiSearch, BiX, BiBot, BiHappy, BiWorld, BiPieChartAlt2 } from "react-icons/bi";
 import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
-
+// Access the token from the .env file
 const TMDB_ACCESS_TOKEN = import.meta.env.VITE_TMDB_ACCESS_TOKEN;
 
 const GENRE_MAP = {
@@ -157,7 +157,7 @@ function Home() {
   };
 
   return (
-    <div className="max-w-7xl mx-auto py-8 px-4 relative">
+   <div className="max-w-7xl mx-auto pt-28 pb-12 px-4 relative">
       
       {/* --- CONTROL BAR --- */}
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 mb-8 border-b border-slate-800 pb-6">
@@ -172,7 +172,7 @@ function Home() {
                 {aiLoading ? <BiLoaderAlt className="animate-spin" /> : <><BiWorld size={20} /> <span className="hidden sm:inline">Discover</span></>}
             </button>
 
-            {/*  STATS BUTTON */}
+            {/* 📊 STATS BUTTON */}
             <button onClick={() => setShowStatsModal(true)} className="bg-slate-800 hover:bg-slate-700 text-blue-400 px-4 rounded-xl font-bold border border-slate-700 transition flex items-center justify-center gap-2 shrink-0">
                 <BiPieChartAlt2 size={20} />
             </button>
