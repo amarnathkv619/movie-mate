@@ -3,10 +3,8 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { BiSave, BiArrowBack, BiSearch, BiLoaderAlt } from "react-icons/bi";
 
-// ---------------------------------------------------------
-// 🔑 PASTE YOUR TOKEN HERE
-const TMDB_ACCESS_TOKEN = "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI3Nzk3NTViNjM0MTE5N2M4MTZlNDJkZGMyZDVjZmU1MyIsIm5iZiI6MTc1NTk2NzM4NC4wMzIsInN1YiI6IjY4YTllZjk4ZjM2ZGIxN2RjNThkMWFiYiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.mzZKh691a4BR7dAL7WB60ye4kYcX1klRYXF36VpefKY"; 
-// ---------------------------------------------------------
+
+const TMDB_ACCESS_TOKEN = import.meta.env.VITE_TMDB_ACCESS_TOKEN ;
 
 function AddMovie() {
   const navigate = useNavigate();
@@ -16,11 +14,11 @@ function AddMovie() {
   const [searchResults, setSearchResults] = useState([]);
   const [searching, setSearching] = useState(false);
 
-  // Added poster_url to state
+  
   const [formData, setFormData] = useState({
     title: "",
     media_type: "Movie",
-    poster_url: "", // <--- New Field
+    poster_url: "", 
     director: "",
     genre: "",
     platform: "",

@@ -24,7 +24,7 @@ function EditMovie() {
     current_episode: 0
   });
 
-  // Redirect if no state found (e.g., direct URL access)
+  // Redirect if no state found 
   useEffect(() => {
     if (!state?.movie) {
       alert("Please select a movie from the list to edit.");

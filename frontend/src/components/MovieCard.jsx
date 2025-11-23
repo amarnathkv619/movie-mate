@@ -80,7 +80,7 @@ function MovieCard({ movie, onDelete, onEdit }) {
                     )}
                 </div>
 
-                {/* Progress Bar (TV Only) */}
+                {/* Progress Bar (TV series Only) */}
                 {movie.media_type === "Series" && (
                   <div className="mt-3 mb-1">
                     <div className="flex justify-between text-[10px] uppercase font-bold text-slate-500 mb-1">
